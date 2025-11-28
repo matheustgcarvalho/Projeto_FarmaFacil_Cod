@@ -6,7 +6,7 @@
     <title>FarmaFácil - Pagamento</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        /* --- Variáveis Globais (Mesma identidade visual) --- */
+        /* --- Variáveis Globais --- */
        :root { --tech-purple: #2E1A47; --neon-mint: #69FFC2; --pure-white: #FFFFFF; --warning-red: #ff4757; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
         body { background-color: var(--tech-purple); color: var(--pure-white); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
@@ -218,10 +218,11 @@
                 </div>
             `;
 
-            // Limpa carrinho e redireciona para o início
+            // CORREÇÃO CRUCIAL:
+            // 1. Não limpamos o sessionStorage aqui (para a maquina.html poder ler).
+            // 2. Redirecionamos para maquina.html
             setTimeout(() => {
-                sessionStorage.removeItem('carrinhoFarmaFacil');
-                window.location.href = 'loja.html'; // Ou uma tela de 'Obrigado' se preferir
+                window.location.href = 'maquina.html';
             }, 5000);
         }
 

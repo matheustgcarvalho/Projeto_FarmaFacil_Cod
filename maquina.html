@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FarmaFácil - Dispensando...</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root { --tech-purple: #2E1A47; --neon-mint: #69FFC2; --pure-white: #FFFFFF; --dark-metal: #1a1a2e; --tablet-bezel: #111; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        
+        body { 
+            background-color: #0d0d16;
+            height: 100vh; 
+            display: flex; justify-content: center; align-items: center; 
+            overflow: hidden; padding: 10px;
+        }
+
+        /* --- ESTRUTURA --- */
+        .machine-structure {
+            width: 100%; max-width: 1100px; height: 95vh;
+            background-color: var(--tech-purple);
+            border-radius: 20px;
+            border: 6px solid #4a3b69;
+            box-shadow: 0 0 80px rgba(105, 255, 194, 0.1);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        .machine-header-banner {
+            background: linear-gradient(90deg, #221236, #3a2258);
+            padding: 12px;
+            text-align: center; color: var(--pure-white); font-weight: 800; font-size: 1.5rem; letter-spacing: 2px;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+            border-bottom: 4px solid #4a3b69; text-shadow: 0 0 10px var(--neon-mint);
+        }
+
+        .machine-main-body { flex-grow: 1; display: flex; overflow: hidden; }
+
+        /* --- ESQUERDA: VITRINE --- */
+        .left-window-section {
+            flex: 60%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+            border-right: 6px solid #4a3b69;
+            position: relative; overflow: hidden;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column;
+        }
+
+        /* Grade de Produtos na Máquina */
+        .shelf-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);    
+            width: 100%; 
+            height: 80%; /* Espaço livre embaixo */
+            padding: 15px; gap: 10px;
+        }
+
+        .shelf-slot {
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+            padding-bottom: 5px; position: relative;
+        }
+
+        .slot-img { max-width: 70%; max-height: 50px; object-fit: contain; filter: brightness(0.9); transition: all 0.3s; }
+        .slot-label {
+            font-size: 0.6rem; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.5);
+            padding: 2px 5px; border-radius: 4px; margin-top: 2px; text-align: center;
+            width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        
+        .slot-coil {
+            position: absolute; bottom: 20px; width: 30px; height: 30px;
+            border: 2px solid rgba(255,255,255,0.1); border-radius: 50%; z-index: -1;
+        }
+
+        /* ANIMAÇÃO DE PISCAR */
+        @keyframes blinkSlot {
+            0% { background-color: transparent; box-shadow: none; }
+            50% { background-color: rgba(105, 255, 194, 0.3); box-shadow: 0 0 15px var(--neon-mint); border-radius: 5px;}
+            100% { background-color: transparent; box-shadow: none; }
+        }
+        .blinking { animation: blinkSlot 0.5s infinite; }
+
+
+        /* --- DIREITA: INTERFACE --- */
+        .right-interface-section {
+            flex: 40%;
+            background-color: #2a1b3d;
+            padding: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;
+            box-shadow: inset 10px 0 30px rgba(0,0,0,0.4);
+        }
+
+        /* TABLET */
+        .tablet-frame {
+            width: 260px; height: 400px;
+            background-color: var(--tablet-bezel);
+            border-radius: 20px;
+            padding: 12px 8px 15px 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 2px 5px rgba(255,255,255,0.1);
+            border: 2px solid #000;
+            display: flex; flex-direction: column;
+            position: relative;
+        }
+        
+        .tablet-screen {
+            background-color: var(--tech-purple);
+            flex-grow: 1; border-radius: 4px; overflow: hidden;
+            display: flex; flex-direction: column; position: relative;
+        }
+
+        /* Mockup da Loja */
+        .mock-header { background: rgba(46,26,71,0.95); padding: 8px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--neon-mint); }
+        .mock-logo { font-size: 0.8rem; color: white; font-weight: bold; display: flex; align-items: center; gap: 4px; }
+        .mock-cart { color: var(--neon-mint); font-size: 1rem; }
+        .mock-body { display: flex; flex-grow: 1; overflow: hidden; }
+        .mock-sidebar { width: 60px; background: rgba(0,0,0,0.2); padding: 5px; display: flex; flex-direction: column; gap: 5px; }
+        .mock-cat-item { height: 8px; width: 100%; background: rgba(255,255,255,0.1); border-radius: 4px; }
+        .mock-cat-item.active { background: rgba(105, 255, 194, 0.2); }
+        .mock-content { flex-grow: 1; padding: 5px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; align-content: start;}
+        .mock-card { height: 60px; background: rgba(255,255,255,0.05); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;}
+        .mock-card-line { height: 4px; width: 80%; background: rgba(255,255,255,0.1); border-radius: 2px; }
+        .mock-card-btn { height: 10px; width: 10px; border-radius: 50%; border: 1px solid var(--neon-mint); margin-top: 3px; }
+
+        /* Overlay de Status (Com transição para sumir suavemente) */
+        .status-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); /* Fundo mais escuro para cobrir bem */
+            backdrop-filter: blur(3px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 15px; z-index: 10;
+            transition: opacity 0.8s ease-in-out; /* Transição suave */
+            opacity: 1;
+        }
+        .status-overlay.hidden { opacity: 0; pointer-events: none; } /* Classe para esconder */
+
+        .status-text { color: var(--neon-mint); font-family: monospace; font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; text-shadow: 0 0 5px var(--neon-mint);}
+        .status-sub { color: white; font-size: 0.8rem; opacity: 0.8; }
+
+
+        /* MAQUININHA PEQUENA REALISTA */
+        .mini-terminal {
+            width: 90px; position: relative;
+        }
+        /* Placeholder melhorado simulando uma maquininha real */
+        .mini-terminal img { width: 100%; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); border-radius: 5px; }
+        .terminal-light { 
+            position: absolute; top: 12%; right: 15%; width: 5px; height: 5px; 
+            background: #2f2; border-radius: 50%; box-shadow: 0 0 5px #2f2; 
+        }
+
+        /* --- BANDEJA --- */
+        .dispense-tray {
+            height: 120px; background: linear-gradient(0deg, #111, #222);
+            border-top: 6px solid #333; position: relative;
+            display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px;
+            overflow: visible; z-index: 20;
+        }
+        .tray-glass {
+            position: absolute; top: -10px; width: 94%; left: 3%; height: 40px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.02));
+            border-bottom: 1px solid rgba(255,255,255,0.2); border-radius: 0 0 10px 10px; pointer-events: none;
+        }
+
+        /* --- ANIMAÇÃO DE QUEDA (FÍSICA) --- */
+        .falling-box-container {
+            position: absolute;
+            width: 80px; height: 80px;
+            z-index: 50;
+            left: 50%; transform: translateX(-50%); top: -100px;
+            background-color: white; border-radius: 8px; padding: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .falling-box-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+        @keyframes dropPhysics {
+            0% { top: -100px; transform: translateX(-50%) rotate(0deg); }
+            60% { top: 88%; transform: translateX(-50%) rotate(10deg); }
+            75% { top: 80%; transform: translateX(-50%) rotate(-5deg); }
+            90% { top: 88%; transform: translateX(-50%) rotate(2deg); }
+            100% { top: 86%; transform: translateX(-50%) rotate(var(--final-rot)); }
+        }
+        .anim-drop { animation: dropPhysics 1s ease-in forwards; }
+
+        /* Botão Final */
+        .btn-finish {
+            background: var(--neon-mint); color: var(--tech-purple);
+            padding: 12px 30px; border-radius: 30px; font-weight: 800; border: none;
+            box-shadow: 0 0 20px var(--neon-mint); cursor: pointer;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s;
+            transform: translateY(-10px);
+        }
+        .btn-finish.show { opacity: 1; pointer-events: all; }
+
+    </style>
+</head>
+<body>
+
+    <div class="machine-structure">
+        <div class="machine-header-banner">
+            <span class="material-icons">local_pharmacy</span> FarmaFácil
+        </div>
+
+        <div class="machine-main-body">
+            
+            <div class="left-window-section" id="machineWindow">
+                <div class="shelf-grid" id="shelfGrid">
+                    </div>
+                </div>
+
+            <div class="right-interface-section">
+                
+                <div class="tablet-frame">
+                    <div class="tablet-screen">
+                        <div class="mock-header">
+                            <div class="mock-logo"><span class="material-icons" style="font-size:1rem;">local_pharmacy</span> Farma</div>
+                            <div class="mock-cart"><span class="material-icons" style="font-size:1rem;">shopping_cart</span></div>
+                        </div>
+                        <div class="mock-body">
+                            <div class="mock-sidebar">
+                                <div class="mock-cat-item active"></div><div class="mock-cat-item"></div><div class="mock-cat-item"></div>
+                            </div>
+                            <div class="mock-content">
+                                <div class="mock-card"><div class="mock-card-line"></div><div class="mock-card-btn"></div></div>
+                                <div class="mock-card"><div class="mock-card-line"></div><div class="mock-card-btn"></div></div>
+                                <div class="mock-card"><div class="mock-card-line"></div><div class="mock-card-btn"></div></div>
+                                <div class="mock-card"><div class="mock-card-line"></div><div class="mock-card-btn"></div></div>
+                                <div class="mock-card"><div class="mock-card-line"></div><div class="mock-card-btn"></div></div>
+                                <div class="mock-card"><div class="mock-card-line"></div><div class="mock-card-btn"></div></div>
+                            </div>
+                        </div>
+
+                        <div id="statusOverlay" class="status-overlay">
+                            <div class="spinner" style="border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--neon-mint); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s infinite; margin-bottom: 10px;"></div>
+                            <div id="statusText" class="status-text">PROCESSANDO</div>
+                            <div id="statusSub" class="status-sub">Aguarde...</div>
+                        </div>
+                        <style>@keyframes spin{to{transform: rotate(360deg);}}</style>
+                    </div>
+                    <div style="width: 100%; display:flex; justify-content:center; margin-top:5px;"><div style="width:30px; height:4px; background:#333; border-radius:2px;"></div></div>
+                </div>
+
+                <div class="mini-terminal">
+                    <img src="https://placehold.co/90x150/333/CCC?text=Terminal\nCard+Insert\n[Keypad]" alt="Maquininha Realista">
+                    <div class="terminal-light"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="dispense-tray">
+            <div class="tray-glass"></div>
+            <button id="btnFinish" class="btn-finish">PEGAR TUDO <span class="material-icons">arrow_downward</span></button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const shelfGrid = document.getElementById('shelfGrid');
+            const machineWindow = document.getElementById('machineWindow');
+            const statusOverlay = document.getElementById('statusOverlay'); // Referência ao overlay
+            const statusText = document.getElementById('statusText');
+            const statusSub = document.getElementById('statusSub');
+            const btnFinish = document.getElementById('btnFinish');
+
+            // Lista de produtos (visual)
+            const stockProducts = [
+                "Dorflex Uno", "Neosaldina", "Torsilax", "Advil 400mg", 
+                "Paracetamol", "Benegrip", "Cimegripe", "Vick Vaporub",
+                "Vitamina C", "Allegra", "Polaramine", "Eno",
+                "Buscopan", "Omeprazol", "Luftal", "Dramin B6"
+            ];
+
+            // 1. Gerar Vitrine
+            stockProducts.forEach((name, index) => {
+                const slot = document.createElement('div');
+                slot.className = 'shelf-slot';
+                slot.id = `slot-${index}`;
+                slot.innerHTML = `
+                    <div class="slot-coil"></div>
+                    <img src="https://placehold.co/50x50/444/999?text=Rx" class="slot-img">
+                    <div class="slot-label">${name}</div>
+                `;
+                shelfGrid.appendChild(slot);
+            });
+
+            // 2. Ler Carrinho
+            let carrinho = JSON.parse(sessionStorage.getItem('carrinhoFarmaFacil')) || [];
+
+            if (carrinho.length === 0) {
+                statusText.textContent = "ERRO";
+                statusSub.textContent = "Sem pedido.";
+                setTimeout(() => window.location.href = 'loja.html', 3000);
+                return;
+            }
+
+            // 3. Função de Dispensação
+            async function dispensarProduto(item) {
+                let targetSlotIndex = stockProducts.findIndex(p => p.includes(item.nome.split(' ')[0]));
+                if (targetSlotIndex === -1) targetSlotIndex = Math.floor(Math.random() * 16);
+                
+                const targetSlot = document.getElementById(`slot-${targetSlotIndex}`);
+                const slotImg = targetSlot.querySelector('.slot-img');
+                slotImg.src = item.imagem; 
+                slotImg.style.filter = "none";
+
+                // A. ATUALIZA STATUS
+                statusText.textContent = "DISPENSANDO...";
+                statusSub.textContent = item.nome;
+
+                // B. PISCAR (4 segundos)
+                targetSlot.classList.add('blinking');
+                await new Promise(r => setTimeout(r, 4000)); 
+                targetSlot.classList.remove('blinking');
+
+                // C. CAIR (Drop)
+                const dropBox = document.createElement('div');
+                dropBox.className = 'falling-box-container anim-drop';
+                const dropImg = document.createElement('img');
+                dropImg.src = item.imagem;
+                dropBox.appendChild(dropImg);
+                dropBox.style.setProperty('--final-rot', `${Math.floor(Math.random() * 40) - 20}deg`);
+                machineWindow.appendChild(dropBox);
+
+                if (navigator.vibrate) navigator.vibrate(100);
+                await new Promise(r => setTimeout(r, 1500));
+            }
+
+            // 4. Loop Principal
+            async function processarPedido() {
+                await new Promise(r => setTimeout(r, 1000));
+
+                for (const item of carrinho) {
+                    await dispensarProduto(item);
+                }
+
+                // Finalizou
+                statusText.textContent = "PRONTO!";
+                statusText.style.color = "white";
+                statusSub.textContent = "Retire abaixo.";
+                btnFinish.classList.add('show');
+                if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+
+                // --- NOVA LÓGICA: Esconder o status após 5 segundos ---
+                setTimeout(() => {
+                    // Adiciona a classe que faz o overlay sumir suavemente
+                    statusOverlay.classList.add('hidden');
+                }, 5000); // Espera 5s após aparecer o "PRONTO!"
+            }
+
+            processarPedido();
+
+            // 5. Botão Reset
+            btnFinish.addEventListener('click', function() {
+                sessionStorage.clear();
+                // Feedback visual rápido antes de sair
+                btnFinish.innerHTML = '<span class="material-icons">check</span> Retirado!';
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1000);
+            });
+        });
+    </script>
+
+</body>
+</html>
