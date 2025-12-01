@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         /* --- Variáveis de Cor --- */
-       :root { --tech-purple: #2E1A47; --neon-mint: #69FFC2; --pure-white: #FFFFFF; --warning-red: #ff4757; }
+       :root { --tech-purple: #2E1A47; --neon-mint: #69FFC2; --pure-white: #FFFFFF; --warning-red: #ff4757; --alert-orange: #ff9800; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
         body { background-color: var(--tech-purple); color: var(--pure-white); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
@@ -69,6 +69,39 @@
         footer { background-color: rgba(46, 26, 71, 0.98); padding: 15px 25px; border-top: 1px solid rgba(105, 255, 194, 0.3); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; text-decoration: none;}
         .cart-summary-text { font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--pure-white); font-size: 1.1rem;}
         .btn-checkout { background-color: var(--pure-white); color: var(--tech-purple); padding: 12px 30px; border-radius: 12px; font-weight: 800; border: none; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 10px; text-decoration: none;}
+
+        /* --- ESTILOS DO MODAL DE AVISO (NOVO) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            backdrop-filter: blur(3px);
+            z-index: 1000;
+            display: none; /* Escondido por padrão */
+            justify-content: center; align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #2a1b3d;
+            border: 1px solid var(--neon-mint);
+            border-radius: 15px;
+            padding: 25px;
+            width: 85%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            animation: modalPop 0.3s ease-out;
+        }
+        @keyframes modalPop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        .modal-icon { font-size: 3.5rem; color: var(--alert-orange); margin-bottom: 15px; }
+        .modal-title { font-size: 1.3rem; font-weight: 800; color: white; margin-bottom: 10px; }
+        .modal-text { font-size: 1rem; color: rgba(255,255,255,0.7); margin-bottom: 25px; line-height: 1.4; }
+        
+        .modal-actions { display: flex; gap: 15px; }
+        .modal-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; font-size: 1rem;}
+        .btn-modal-cancel { background-color: rgba(255,255,255,0.1); color: white; }
+        .btn-modal-confirm { background-color: var(--alert-orange); color: white; }
+
     </style>
 </head>
 <body>
@@ -160,14 +193,14 @@
 
                 <div class="product-card" data-category="dor">
                     <span class="reg-tag tag-otc">Venda Livre</span>
-                    <div class="product-img-container"><img src="https://placehold.co/200x140/EEE/2E1A47?text=Salonpas" class="product-img" alt="Salonpas"></div>
-                    <h3 class="product-title">Salonpas Adesivo</h3>
-                    <p class="product-subtitle">Alívio de dores musculares.</p>
-                    <div class="product-points"><span class="material-icons points-icon">stars</span>+12 pts</div>
-                    <div class="product-footer"><span class="product-price">R$ 12,00</span><button class="btn-add" data-id="6" data-nome="Salonpas" data-preco="12.00" data-imagem="https://placehold.co/200x140/EEE/2E1A47?text=Salonpas" data-rx="false"><span class="material-icons">add</span></button></div>
+                    <div class="product-img-container"><img src="https://placehold.co/200x140/EEE/2E1A47?text=Nimesulida" class="product-img" alt="Nimesulida"></div>
+                    <h3 class="product-title">Nimesulida</h3>
+                    <p class="product-subtitle">Anti-inflamatório. 12cp.</p>
+                    <div class="product-points"><span class="material-icons points-icon">stars</span>+11 pts</div>
+                    <div class="product-footer"><span class="product-price">R$ 11,50</span><button class="btn-add" data-id="6" data-nome="Nimesulida" data-preco="11.50" data-imagem="https://placehold.co/200x140/EEE/2E1A47?text=Nimesulida" data-rx="false"><span class="material-icons">add</span></button></div>
                 </div>
 
-                 <div class="product-card" data-category="gripe">
+                <div class="product-card" data-category="gripe">
                     <span class="reg-tag tag-otc">Venda Livre</span>
                     <div class="product-img-container"><img src="https://placehold.co/200x140/EEE/2E1A47?text=Benegrip" class="product-img" alt="Benegrip"></div>
                     <h3 class="product-title">Benegrip</h3>
@@ -275,6 +308,15 @@
                     <div class="product-footer"><span class="product-price">R$ 21,50</span><button class="btn-add" data-id="18" data-nome="Dramin B6" data-preco="21.50" data-imagem="https://placehold.co/200x140/EEE/2E1A47?text=Dramin" data-rx="false"><span class="material-icons">add</span></button></div>
                 </div>
 
+                <div class="product-card" data-category="estomago">
+                    <span class="reg-tag tag-otc">Venda Livre</span>
+                    <div class="product-img-container"><img src="https://placehold.co/200x140/EEE/2E1A47?text=Pantoprazol" class="product-img" alt="Pantoprazol"></div>
+                    <h3 class="product-title">Pantoprazol 20mg</h3>
+                    <p class="product-subtitle">Gastrite e refluxo.</p>
+                    <div class="product-points"><span class="material-icons points-icon">stars</span>+30 pts</div>
+                    <div class="product-footer"><span class="product-price">R$ 30,00</span><button class="btn-add" data-id="30" data-nome="Pantoprazol" data-preco="30.00" data-imagem="https://placehold.co/200x140/EEE/2E1A47?text=Pantoprazol" data-rx="false"><span class="material-icons">add</span></button></div>
+                </div>
+
                 <div class="product-card" data-category="tarja">
                     <span class="reg-tag tag-rx">Receita Necessária</span>
                     <div class="product-img-container"><img src="https://placehold.co/200x140/EEE/2E1A47?text=Amoxicilina" class="product-img" alt="Amoxicilina"></div>
@@ -299,6 +341,18 @@
                     </div>
                 </div>
 
+                <div class="product-card" data-category="tarja">
+                    <span class="reg-tag tag-rx">Receita Obrigatória</span>
+                    <div class="product-img-container"><img src="https://placehold.co/200x140/EEE/2E1A47?text=Rivotril" class="product-img" alt="Rivotril"></div>
+                    <h3 class="product-title">Rivotril 0,5mg</h3>
+                    <p class="product-subtitle">Clonazepam. Tarja Preta.</p>
+                    <div class="product-points"><span class="material-icons points-icon">stars</span>+15 pts</div>
+                    <div class="product-footer">
+                        <span class="product-price">R$ 15,20</span>
+                        <button class="btn-add" style="border-color: var(--warning-red); color: var(--warning-red)" data-id="23" data-nome="Rivotril 0,5mg" data-preco="15.20" data-imagem="https://placehold.co/200x140/EEE/2E1A47?text=Rivotril" data-rx="true"><span class="material-icons">lock</span></button>
+                    </div>
+                </div>
+
                 <div class="product-card" data-category="continuo">
                     <span class="reg-tag tag-rx">Receita Necessária</span>
                     <div class="product-img-container"><img src="https://placehold.co/200x140/EEE/2E1A47?text=Losartana" class="product-img" alt="Losartana"></div>
@@ -320,18 +374,6 @@
                     <div class="product-footer">
                         <span class="product-price">R$ 10,50</span>
                         <button class="btn-add" style="border-color: var(--warning-red); color: var(--warning-red)" data-id="22" data-nome="Atenolol 25mg" data-preco="10.50" data-imagem="https://placehold.co/200x140/EEE/2E1A47?text=Atenolol" data-rx="true"><span class="material-icons">assignment_turned_in</span></button>
-                    </div>
-                </div>
-
-                <div class="product-card" data-category="tarja">
-                    <span class="reg-tag tag-rx">Receita Obrigatória</span>
-                    <div class="product-img-container"><img src="https://placehold.co/200x140/EEE/2E1A47?text=Rivotril" class="product-img" alt="Rivotril"></div>
-                    <h3 class="product-title">Rivotril 0,5mg</h3>
-                    <p class="product-subtitle">Clonazepam. Tarja Preta.</p>
-                    <div class="product-points"><span class="material-icons points-icon">stars</span>+15 pts</div>
-                    <div class="product-footer">
-                        <span class="product-price">R$ 15,20</span>
-                        <button class="btn-add" style="border-color: var(--warning-red); color: var(--warning-red)" data-id="23" data-nome="Rivotril 0,5mg" data-preco="15.20" data-imagem="https://placehold.co/200x140/EEE/2E1A47?text=Rivotril" data-rx="true"><span class="material-icons">lock</span></button>
                     </div>
                 </div>
 
@@ -385,24 +427,6 @@
                     <div class="product-points"><span class="material-icons points-icon">stars</span>+18 pts</div>
                     <div class="product-footer"><span class="product-price">R$ 18,90</span><button class="btn-add" data-id="28" data-nome="Moura Brasil" data-preco="18.90" data-imagem="https://placehold.co/200x140/EEE/2E1A47?text=Colirio" data-rx="false"><span class="material-icons">add</span></button></div>
                 </div>
-                
-                 <div class="product-card" data-category="dor">
-                    <span class="reg-tag tag-otc">Venda Livre</span>
-                    <div class="product-img-container"><img src="https://placehold.co/200x140/EEE/2E1A47?text=Nimesulida" class="product-img" alt="Nimesulida"></div>
-                    <h3 class="product-title">Nimesulida</h3>
-                    <p class="product-subtitle">Anti-inflamatório. 12cp.</p>
-                    <div class="product-points"><span class="material-icons points-icon">stars</span>+11 pts</div>
-                    <div class="product-footer"><span class="product-price">R$ 11,50</span><button class="btn-add" data-id="29" data-nome="Nimesulida" data-preco="11.50" data-imagem="https://placehold.co/200x140/EEE/2E1A47?text=Nimesulida" data-rx="false"><span class="material-icons">add</span></button></div>
-                </div>
-
-                 <div class="product-card" data-category="estomago">
-                    <span class="reg-tag tag-otc">Venda Livre</span>
-                    <div class="product-img-container"><img src="https://placehold.co/200x140/EEE/2E1A47?text=Pantoprazol" class="product-img" alt="Pantoprazol"></div>
-                    <h3 class="product-title">Pantoprazol 20mg</h3>
-                    <p class="product-subtitle">Gastrite e refluxo.</p>
-                    <div class="product-points"><span class="material-icons points-icon">stars</span>+30 pts</div>
-                    <div class="product-footer"><span class="product-price">R$ 30,00</span><button class="btn-add" data-id="30" data-nome="Pantoprazol" data-preco="30.00" data-imagem="https://placehold.co/200x140/EEE/2E1A47?text=Pantoprazol" data-rx="false"><span class="material-icons">add</span></button></div>
-                </div>
 
             </div>
         </section>
@@ -418,6 +442,22 @@
             VER CARRINHO <span class="material-icons">arrow_forward</span>
         </a>
     </footer>
+
+    <div id="qtyWarningModal" class="modal-overlay">
+        <div class="modal-content modal-warning">
+            <div class="material-icons modal-icon">health_and_safety</div>
+            <div class="modal-title">Atenção à Saúde</div>
+            <div class="modal-text">
+                Importante: O uso excessivo de qualquer medicamento sem a prescrição de um profissional pode causar prejuízos à sua saúde.
+                <br><br>
+                <strong>Deseja continuar comprando mais de 3 unidades desse medicamento?</strong>
+            </div>
+            <div class="modal-actions">
+                <button id="btnCancelQty" class="modal-btn btn-modal-cancel">Não</button>
+                <button id="btnConfirmQty" class="modal-btn btn-modal-confirm">Sim, desejo</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -439,6 +479,29 @@
             // 3. Inicializar Carrinho e atualizar contadores
             let carrinho = JSON.parse(sessionStorage.getItem('carrinhoFarmaFacil')) || [];
             atualizarContadoresCarrinho();
+
+            // Elementos do Modal
+            const qtyWarningModal = document.getElementById('qtyWarningModal');
+            const btnCancelQty = document.getElementById('btnCancelQty');
+            const btnConfirmQty = document.getElementById('btnConfirmQty');
+            let pendingProduct = null; 
+
+            // Lógica Modal
+            btnCancelQty.addEventListener('click', () => {
+                qtyWarningModal.style.display = 'none';
+                pendingProduct = null;
+            });
+
+            btnConfirmQty.addEventListener('click', () => {
+                if(pendingProduct) {
+                    carrinho.push(pendingProduct);
+                    sessionStorage.setItem('carrinhoFarmaFacil', JSON.stringify(carrinho));
+                    atualizarContadoresCarrinho();
+                }
+                qtyWarningModal.style.display = 'none';
+                pendingProduct = null;
+            });
+
 
             // 4. Lógica de FILTRAGEM DE CATEGORIAS
             const categoryItems = document.querySelectorAll('.category-item');
@@ -496,7 +559,7 @@
             });
 
 
-            // 6. Lógica dos Botões de Adicionar (+)
+            // 6. Lógica dos Botões de Adicionar (+) COM REGRA DE QUANTIDADE
             const addButtons = document.querySelectorAll('.btn-add');
             addButtons.forEach(button => {
                 button.addEventListener('click', function() {
@@ -505,22 +568,30 @@
                     if (isRx) {
                         alert("⚠️ ATENÇÃO: Medicamento sob prescrição.\n\nFale com o farmacêutico para liberar.");
                     } else {
-                        // CAPTURA A IMAGEM AGORA
+                        const id = this.getAttribute('data-id');
+                        
+                        // CONTA QUANTOS JÁ TEM
+                        const qtdAtual = carrinho.filter(item => item.id === id).length;
+
                         const produto = {
-                            id: this.getAttribute('data-id'),
+                            id: id,
                             nome: this.getAttribute('data-nome'),
                             preco: parseFloat(this.getAttribute('data-preco')),
                             imagem: this.getAttribute('data-imagem')
                         };
-                        
-                        carrinho.push(produto);
-                        sessionStorage.setItem('carrinhoFarmaFacil', JSON.stringify(carrinho));
-                        
-                        atualizarContadoresCarrinho();
-                        
-                        const originalHtml = this.innerHTML;
-                        this.innerHTML = '<span class="material-icons">check</span>';
-                        setTimeout(() => { this.innerHTML = originalHtml; }, 1000);
+
+                        if (qtdAtual >= 3) {
+                            pendingProduct = produto;
+                            qtyWarningModal.style.display = 'flex';
+                        } else {
+                            carrinho.push(produto);
+                            sessionStorage.setItem('carrinhoFarmaFacil', JSON.stringify(carrinho));
+                            atualizarContadoresCarrinho();
+                            
+                            const originalHtml = this.innerHTML;
+                            this.innerHTML = '<span class="material-icons">check</span>';
+                            setTimeout(() => { this.innerHTML = originalHtml; }, 1000);
+                        }
                     }
                 });
             });
