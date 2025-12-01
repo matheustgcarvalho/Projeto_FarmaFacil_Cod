@@ -73,6 +73,39 @@
         .cart-total-summary { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 1.4rem; }
         .total-value { color: var(--neon-mint); font-size: 1.8rem; font-weight: 800; }
         .btn-finish-order { width: 100%; background-color: var(--neon-mint); color: var(--tech-purple); padding: 15px; border-radius: 12px; font-weight: 800; border: none; font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; alignItems: center; gap: 10px;}
+
+        /* --- ESTILOS DO MODAL DE CONFIRMAÇÃO (NOVO) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            backdrop-filter: blur(3px);
+            z-index: 1000;
+            display: none; /* Escondido por padrão */
+            justify-content: center; align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #2a1b3d;
+            border: 1px solid var(--neon-mint);
+            border-radius: 15px;
+            padding: 25px;
+            width: 85%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            animation: modalPop 0.3s ease-out;
+        }
+        @keyframes modalPop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        .modal-icon { font-size: 3.5rem; color: var(--warning-red); margin-bottom: 15px; }
+        .modal-title { font-size: 1.3rem; font-weight: 800; color: white; margin-bottom: 10px; }
+        .modal-text { font-size: 1rem; color: rgba(255,255,255,0.7); margin-bottom: 25px; line-height: 1.4; }
+        
+        .modal-actions { display: flex; gap: 15px; }
+        .modal-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; font-size: 1rem;}
+        .btn-modal-cancel { background-color: rgba(255,255,255,0.1); color: white; }
+        .btn-modal-confirm { background-color: var(--warning-red); color: white; }
+
     </style>
 </head>
 <body>
@@ -112,6 +145,18 @@
         </button>
     </footer>
 
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="material-icons modal-icon">warning_amber</div>
+            <div class="modal-title">Esvaziar Carrinho?</div>
+            <div class="modal-text">Tem certeza que deseja remover todos os itens? Essa ação não pode ser desfeita.</div>
+            <div class="modal-actions">
+                <button id="btnCancelClear" class="modal-btn btn-modal-cancel">Cancelar</button>
+                <button id="btnConfirmClear" class="modal-btn btn-modal-confirm">Sim, Esvaziar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Login Check
@@ -129,14 +174,31 @@
             const cartListContainer = document.getElementById('cartListContainer');
             const totalValueDisplay = document.getElementById('totalValueDisplay');
             const btnClearCart = document.getElementById('btnClearCart');
+            
+            // Referências do Modal
+            const confirmModal = document.getElementById('confirmModal');
+            const btnCancelClear = document.getElementById('btnCancelClear');
+            const btnConfirmClear = document.getElementById('btnConfirmClear');
 
-            // --- FUNÇÃO LIMPAR CARRINHO ---
+            // --- LÓGICA DO MODAL (SUBSTITUINDO O CONFIRM NATIVO) ---
             btnClearCart.addEventListener('click', function() {
-                if(confirm("Tem certeza que deseja esvaziar todo o carrinho?")) {
-                    carrinhoBruto = [];
-                    salvarERenderizar();
+                if(carrinhoBruto.length > 0) {
+                    confirmModal.style.display = 'flex'; // Mostra o modal
                 }
             });
+
+            // Botão Cancelar do Modal
+            btnCancelClear.addEventListener('click', function() {
+                confirmModal.style.display = 'none'; // Esconde o modal
+            });
+
+            // Botão Confirmar do Modal
+            btnConfirmClear.addEventListener('click', function() {
+                carrinhoBruto = []; // Limpa o array
+                salvarERenderizar(); // Salva e atualiza a tela
+                confirmModal.style.display = 'none'; // Esconde o modal
+            });
+            // -------------------------------------------------------
 
             function salvarERenderizar() {
                 sessionStorage.setItem('carrinhoFarmaFacil', JSON.stringify(carrinhoBruto));
@@ -246,14 +308,12 @@
                     return;
                 }
                 
-                // Salva o total calculado para usar na próxima tela (opcional, mas útil)
-                // O carrinho já está no storage, então podemos recalcular lá também.
-                // Apenas redireciona:
                 window.location.href = 'metodopagamento.html';
             });
 
             renderizarCarrinho();
         });
     </script>
+
 </body>
 </html>
