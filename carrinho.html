@@ -6,7 +6,7 @@
     <title>FarmaFácil - Carrinho</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-       :root { --tech-purple: #2E1A47; --neon-mint: #69FFC2; --pure-white: #FFFFFF; --warning-red: #ff4757; }
+       :root { --tech-purple: #2E1A47; --neon-mint: #69FFC2; --pure-white: #FFFFFF; --warning-red: #ff4757; --alert-orange: #ff9800; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
         body { background-color: var(--tech-purple); color: var(--pure-white); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
@@ -19,11 +19,9 @@
 
         main { flex-grow: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; max-width: 800px; margin: 0 auto; width: 100%; }
         
-        /* HEADER DA LISTA DE ITENS */
         .cart-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .page-title { font-size: 1.8rem; display: flex; align-items: center; gap: 10px; color: var(--neon-mint); margin: 0; }
         
-        /* BOTÃO LIMPAR CARRINHO */
         .btn-clear-cart { background: none; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); padding: 8px 15px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 0.9rem; transition: all 0.3s; }
         .btn-clear-cart:hover { border-color: var(--warning-red); color: var(--warning-red); background-color: rgba(255, 71, 87, 0.1); }
 
@@ -31,41 +29,19 @@
         .cart-item { background-color: rgba(255,255,255,0.05); border-radius: 16px; padding: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(105, 255, 194, 0.2); }
         
         .cart-item-left { display: flex; align-items: center; gap: 15px; }
-        
-        /* ESTILO DA IMAGEM NO CARRINHO */
-        .cart-item-img {
-            width: 70px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background-color: white; /* Fallback */
-        }
+        .cart-item-img { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background-color: white; }
 
         .item-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px;}
         .item-price-unit { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
         .item-price-total { color: var(--neon-mint); font-weight: 700; font-size: 1rem; margin-top: 2px;}
 
-        /* CONTROLES DE QUANTIDADE (+ e -) */
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background-color: rgba(0,0,0,0.2);
-            padding: 5px;
-            border-radius: 30px;
-        }
-        .btn-qty {
-            width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s;
-        }
+        .quantity-controls { display: flex; align-items: center; gap: 10px; background-color: rgba(0,0,0,0.2); padding: 5px; border-radius: 30px; }
+        .btn-qty { width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s; }
         .btn-decrease { background-color: transparent; border: 1px solid var(--warning-red); color: var(--warning-red); }
         .btn-decrease:hover { background-color: var(--warning-red); color: white; }
-        
         .qty-display { font-weight: 700; font-size: 1.1rem; min-width: 25px; text-align: center; }
-
         .btn-increase { background-color: var(--neon-mint); color: var(--tech-purple); }
         .btn-increase:hover { transform: scale(1.1); box-shadow: 0 0 8px var(--neon-mint); }
-
 
         .empty-cart-message { text-align: center; padding: 50px; color: rgba(255,255,255,0.5); font-size: 1.2rem; }
 
@@ -74,37 +50,35 @@
         .total-value { color: var(--neon-mint); font-size: 1.8rem; font-weight: 800; }
         .btn-finish-order { width: 100%; background-color: var(--neon-mint); color: var(--tech-purple); padding: 15px; border-radius: 12px; font-weight: 800; border: none; font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; alignItems: center; gap: 10px;}
 
-        /* --- ESTILOS DO MODAL DE CONFIRMAÇÃO (NOVO) --- */
+        /* --- ESTILOS DOS MODAIS --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.85);
-            backdrop-filter: blur(3px);
-            z-index: 1000;
-            display: none; /* Escondido por padrão */
-            justify-content: center; align-items: center;
+            background-color: rgba(0,0,0,0.85); backdrop-filter: blur(3px);
+            z-index: 1000; display: none; justify-content: center; align-items: center;
         }
         
         .modal-content {
-            background-color: #2a1b3d;
-            border: 1px solid var(--neon-mint);
-            border-radius: 15px;
-            padding: 25px;
-            width: 85%;
-            max-width: 350px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            background-color: #2a1b3d; border: 1px solid var(--neon-mint);
+            border-radius: 15px; padding: 25px; width: 85%; max-width: 350px;
+            text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5);
             animation: modalPop 0.3s ease-out;
         }
         @keyframes modalPop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-        .modal-icon { font-size: 3.5rem; color: var(--warning-red); margin-bottom: 15px; }
+        .modal-icon { font-size: 3.5rem; margin-bottom: 15px; }
         .modal-title { font-size: 1.3rem; font-weight: 800; color: white; margin-bottom: 10px; }
-        .modal-text { font-size: 1rem; color: rgba(255,255,255,0.7); margin-bottom: 25px; line-height: 1.4; }
+        .modal-text { font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 25px; line-height: 1.4; }
         
         .modal-actions { display: flex; gap: 15px; }
         .modal-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; font-size: 1rem;}
         .btn-modal-cancel { background-color: rgba(255,255,255,0.1); color: white; }
-        .btn-modal-confirm { background-color: var(--warning-red); color: white; }
+        
+        /* Cores específicas para cada modal */
+        .modal-danger .modal-icon { color: var(--warning-red); }
+        .modal-danger .btn-modal-confirm { background-color: var(--warning-red); color: white; }
+        
+        .modal-warning .modal-icon { color: var(--alert-orange); }
+        .modal-warning .btn-modal-confirm { background-color: var(--alert-orange); color: white; }
 
     </style>
 </head>
@@ -146,8 +120,8 @@
     </footer>
 
     <div id="confirmModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="material-icons modal-icon">warning_amber</div>
+        <div class="modal-content modal-danger">
+            <div class="material-icons modal-icon">delete_forever</div>
             <div class="modal-title">Esvaziar Carrinho?</div>
             <div class="modal-text">Tem certeza que deseja remover todos os itens? Essa ação não pode ser desfeita.</div>
             <div class="modal-actions">
@@ -157,12 +131,28 @@
         </div>
     </div>
 
+    <div id="qtyWarningModal" class="modal-overlay">
+        <div class="modal-content modal-warning">
+            <div class="material-icons modal-icon">health_and_safety</div>
+            <div class="modal-title">Atenção à Saúde</div>
+            <div class="modal-text">
+                O uso excessivo de qualquer medicamento sem orientação profissional pode prejudicar sua saúde.
+                <br><br>
+                <strong>Deseja continuar comprando mais de 3 unidades deste item?</strong>
+            </div>
+            <div class="modal-actions">
+                <button id="btnCancelQty" class="modal-btn btn-modal-cancel">Não</button>
+                <button id="btnConfirmQty" class="modal-btn btn-modal-confirm">Sim, desejo</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Login Check
             const nomeSalvo = sessionStorage.getItem('usuarioFarmaFacil');
             if (!nomeSalvo) { window.location.href = 'login.html'; return; }
-            document.getElementById('userNameDisplay').textContent = nomeSalvo;
+            document.getElementById('userNameDisplay').textContent = nomeSalvo.split(' ')[0];
             
             document.getElementById('btnExit').addEventListener('click', function() {
                 sessionStorage.removeItem('usuarioFarmaFacil'); window.location.href = 'login.html';
@@ -175,30 +165,59 @@
             const totalValueDisplay = document.getElementById('totalValueDisplay');
             const btnClearCart = document.getElementById('btnClearCart');
             
-            // Referências do Modal
+            // MODAIS E BOTÕES
             const confirmModal = document.getElementById('confirmModal');
+            const qtyWarningModal = document.getElementById('qtyWarningModal');
+            
             const btnCancelClear = document.getElementById('btnCancelClear');
             const btnConfirmClear = document.getElementById('btnConfirmClear');
+            
+            const btnCancelQty = document.getElementById('btnCancelQty');
+            const btnConfirmQty = document.getElementById('btnConfirmQty');
 
-            // --- LÓGICA DO MODAL (SUBSTITUINDO O CONFIRM NATIVO) ---
+            // Variável para guardar qual item está pendente de adição
+            let pendingItemId = null;
+
+            // --- LÓGICA DO MODAL LIMPAR ---
             btnClearCart.addEventListener('click', function() {
-                if(carrinhoBruto.length > 0) {
-                    confirmModal.style.display = 'flex'; // Mostra o modal
+                if(carrinhoBruto.length > 0) confirmModal.style.display = 'flex';
+            });
+            btnCancelClear.addEventListener('click', () => confirmModal.style.display = 'none');
+            btnConfirmClear.addEventListener('click', () => {
+                carrinhoBruto = [];
+                salvarERenderizar();
+                confirmModal.style.display = 'none';
+            });
+
+            // --- LÓGICA DO MODAL DE QUANTIDADE ---
+            btnCancelQty.addEventListener('click', () => {
+                qtyWarningModal.style.display = 'none';
+                pendingItemId = null; // Cancela a adição
+            });
+
+            btnConfirmQty.addEventListener('click', () => {
+                // Usuário confirmou, então adiciona o item pendente
+                if(pendingItemId) {
+                    const itemToAdd = carrinhoBruto.find(item => item.id === pendingItemId);
+                    if(itemToAdd) {
+                        carrinhoBruto.push(itemToAdd);
+                        salvarERenderizar();
+                    }
                 }
+                qtyWarningModal.style.display = 'none';
+                pendingItemId = null;
             });
 
-            // Botão Cancelar do Modal
-            btnCancelClear.addEventListener('click', function() {
-                confirmModal.style.display = 'none'; // Esconde o modal
-            });
 
-            // Botão Confirmar do Modal
-            btnConfirmClear.addEventListener('click', function() {
-                carrinhoBruto = []; // Limpa o array
-                salvarERenderizar(); // Salva e atualiza a tela
-                confirmModal.style.display = 'none'; // Esconde o modal
+            // Finalizar Pagamento
+            const btnFinish = document.querySelector('.btn-finish-order');
+            btnFinish.addEventListener('click', function() {
+                if (carrinhoBruto.length === 0) {
+                    alert("Seu carrinho está vazio!");
+                    return;
+                }
+                window.location.href = 'metodopagamento.html';
             });
-            // -------------------------------------------------------
 
             function salvarERenderizar() {
                 sessionStorage.setItem('carrinhoFarmaFacil', JSON.stringify(carrinhoBruto));
@@ -221,16 +240,14 @@
                 cartListContainer.innerHTML = ''; 
                 let totalGeral = 0;
 
-                // --- LÓGICA DE VISIBILIDADE DO BOTÃO LIMPAR ---
                 if (carrinhoBruto.length === 0) {
-                    btnClearCart.style.display = 'none'; // ESCONDE SE VAZIO
+                    btnClearCart.style.display = 'none';
                     cartListContainer.innerHTML = '<div class="empty-cart-message"><span class="material-icons" style="font-size: 4rem; margin-bottom: 20px; display: block;">remove_shopping_cart</span>Seu carrinho está vazio.</div>';
                     totalValueDisplay.textContent = 'R$ 0,00';
                     return;
                 } else {
-                    btnClearCart.style.display = 'flex'; // MOSTRA SE TEM ITENS
+                    btnClearCart.style.display = 'flex';
                 }
-                // ----------------------------------------------
 
                 const itensAgrupados = agruparItens(carrinhoBruto);
 
@@ -241,11 +258,9 @@
                     const itemElement = document.createElement('div');
                     itemElement.classList.add('cart-item');
                     
-                    // HTML COM IMAGEM E CONTROLES DE + E -
                     itemElement.innerHTML = `
                         <div class="cart-item-left">
                             <img src="${produto.imagem}" class="cart-item-img" alt="${produto.nome}">
-                            
                             <div>
                                 <div class="item-name">${produto.nome}</div>
                                 <div class="item-price-unit">Unit: R$ ${produto.preco.toFixed(2).replace('.',',')}</div>
@@ -254,13 +269,13 @@
                         </div>
 
                         <div class="quantity-controls">
-                            <button class="btn-qty btn-decrease" data-id="${produto.id}" title="Diminuir">
+                            <button class="btn-qty btn-decrease" data-id="${produto.id}">
                                 <span class="material-icons" style="font-size: 1.2rem;">remove</span>
                             </button>
                             
                             <span class="qty-display">${produto.quantidade}</span>
                             
-                            <button class="btn-qty btn-increase" data-id="${produto.id}" title="Aumentar">
+                            <button class="btn-qty btn-increase" data-id="${produto.id}">
                                 <span class="material-icons" style="font-size: 1.2rem;">add</span>
                             </button>
                         </div>
@@ -269,12 +284,11 @@
                 });
 
                 totalValueDisplay.textContent = 'R$ ' + totalGeral.toFixed(2).replace('.',',');
-
                 atribuirBotoes();
             }
 
             function atribuirBotoes() {
-                // Lógica Diminuir (-)
+                // Diminuir
                 document.querySelectorAll('.btn-decrease').forEach(button => {
                     button.addEventListener('click', function() {
                         const id = this.getAttribute('data-id');
@@ -286,30 +300,29 @@
                     });
                 });
 
-                // Lógica Aumentar (+)
+                // Aumentar (COM TRAVA DE SEGURANÇA)
                 document.querySelectorAll('.btn-increase').forEach(button => {
                     button.addEventListener('click', function() {
                         const id = this.getAttribute('data-id');
-                        // Encontra um exemplo desse item para copiar os dados
-                        const itemExemplo = carrinhoBruto.find(item => item.id === id);
-                        if (itemExemplo) {
-                            carrinhoBruto.push(itemExemplo);
-                            salvarERenderizar();
+                        
+                        // Conta quantos desse item já existem no carrinho
+                        const qtdAtual = carrinhoBruto.filter(item => item.id === id).length;
+
+                        // Se já tem 3 ou mais, mostra aviso
+                        if (qtdAtual >= 3) {
+                            pendingItemId = id; // Guarda o ID para adicionar se o usuário confirmar
+                            qtyWarningModal.style.display = 'flex';
+                        } else {
+                            // Se tem menos de 3, adiciona direto
+                            const itemExemplo = carrinhoBruto.find(item => item.id === id);
+                            if (itemExemplo) {
+                                carrinhoBruto.push(itemExemplo);
+                                salvarERenderizar();
+                            }
                         }
                     });
                 });
             }
-
-            const btnFinish = document.querySelector('.btn-finish-order');
-            
-            btnFinish.addEventListener('click', function() {
-                if (carrinhoBruto.length === 0) {
-                    alert("Seu carrinho está vazio!");
-                    return;
-                }
-                
-                window.location.href = 'metodopagamento.html';
-            });
 
             renderizarCarrinho();
         });
